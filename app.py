@@ -76,19 +76,31 @@ import streamlit as st
 import glob
 import os
 
-folder_path = st.text_input(
-    "Enter Bearing Folder Path"
+import zipfile
+import tempfile
+import glob
+import os
+
+uploaded_zip = st.file_uploader(
+    "Upload Bearing ZIP Folder",
+    type="zip"
 )
 
-if st.button("Read Files"):
+if uploaded_zip is not None:
+
+    temp_dir = tempfile.mkdtemp()
+
+    with zipfile.ZipFile(uploaded_zip, "r") as zip_ref:
+        zip_ref.extractall(temp_dir)
 
     acc_files = sorted(
         glob.glob(
-            os.path.join(
-                folder_path,
-                "acc_*.csv"
-            )
+            os.path.join(temp_dir, "**", "acc_*.csv"),
+            recursive=True
         )
+    )
+
+    st.success(f"Found {len(acc_files)} vibration files")
     )
 
     st.write(
@@ -349,7 +361,7 @@ if st.button("Read Files"):
     with left:
 
         st.write("**Bearing Name**")
-        st.info(os.path.basename(folder_path))
+        st.info(uploaded_zip.name.replace(".zip", ""))
 
         st.write("**CSV Files Processed**")
         st.info(len(acc_files))
