@@ -101,7 +101,6 @@ if uploaded_zip is not None:
     )
 
     st.success(f"Found {len(acc_files)} vibration files")
-    )
 
     st.write(
         f"Found {len(acc_files)} CSV files"
