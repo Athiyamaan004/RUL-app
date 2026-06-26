@@ -384,9 +384,42 @@ if st.button("Read Files"):
         "Predicted RUL": pred
     })
 
-    import plotly.express as px
-
+    import plotly.graph_objects as go
     import matplotlib.pyplot as plt
+
+# -------------------- Interactive Plotly Graph --------------------
+
+    plotly_fig = go.Figure()
+
+    plotly_fig.add_trace(
+        go.Scatter(
+            x=graph_df["Cycle"],
+            y=graph_df["Predicted RUL"],
+            mode="lines+markers",
+            name="Predicted RUL",
+            line=dict(color="royalblue", width=3),
+            marker=dict(size=5),
+            hovertemplate=
+            "<b>Bearing Cycle:</b> %{x}<br>"
+            "<b>Predicted RUL:</b> %{y:.4f}<extra></extra>"
+        )
+    )
+
+    plotly_fig.update_layout(
+        title="Interactive Remaining Useful Life Trend",
+        xaxis_title="Bearing Cycle",
+        yaxis_title="Normalized Remaining Useful Life",
+        hovermode="x unified",
+        template="plotly_white",
+        height=500
+    )
+
+    st.plotly_chart(
+        plotly_fig,
+        use_container_width=True
+    )
+
+# -------------------- Matplotlib Graph for PDF --------------------
 
     fig, ax = plt.subplots(figsize=(10,4))
 
