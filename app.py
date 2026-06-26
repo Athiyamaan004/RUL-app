@@ -487,7 +487,7 @@ if uploaded_zip is not None:
 
     elements.append(
         Paragraph(
-            f"Bearing : {os.path.basename(folder_path)}",
+            f"Bearing : {uploaded_zip.name.replace(".zip", "")}",
             styles["Normal"]
         )
     )
